@@ -1,0 +1,23 @@
+*   text=auto
+
+*.go	text	eof=lf
+*.html  text    eof=lf
+*.htm	text	eof=lf
+*.js	text	eof=lf
+*.css   text    eof=lf
+*.scss  text    eof=lf
+*.json  text    eof=lf
+*.raml  text    eof=lf
+*.yaml  text    eof=lf
+*.yml   text    eof=lf
+*.md    text    eof=lf
+*.txt   text    eof=lf
+go.mod  text    eof=lf
+go.sum  text    eof=lf
+LICENSE text    eof=lf
+*.png   binary
+*.jpg   binary
+.editorconfig   text  eof=lf
+.gitattributes  text  eof=lf
+.gitconfig  text  eof=lf
+.gitignore  text  eof=lf
