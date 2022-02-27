@@ -14,6 +14,12 @@ func MessageBindCollection(w webview.WebView) {
 	w.Bind("insertNewMessage", InsertNewMessage())
 	w.Bind("updateMessageByID", UpdateMessageByID())
 	w.Bind("deleteMessageByID", DeleteMessageByID())
+	w.Bind("getAllMessageFileByMessageID", GetAllMessageFileByMessageID())
+	w.Bind("getAllMessageImageByMessageID", GetAllMessageImageByMessageID())
+	w.Bind("insertNewMessageFileByMessageID", InsertNewMessageFileByMessageID())
+	w.Bind("insertNewMessageImageByMessageID", InsertNewMessageImageByMessageID())
+	w.Bind("deleteMessageFileByMessageIDAndFileID", DeleteMessageFileByMessageIDAndFileID())
+	w.Bind("deleteMessageImageByMessageIDAndImageID", DeleteMessageImageByMessageIDAndImageID())
 }
 
 func GetAllMessage() interface{} {
@@ -24,7 +30,11 @@ func GetAllMessage() interface{} {
 		}
 		var messageDtos []dto.MessageResponseDto
 		for _, message := range messages {
-			messageDtos = append(messageDtos, dto.CreateMessageResponseDto(message))
+			messageDto, err := dto.CreateMessageResponseDto(message)
+			if err != nil {
+				return nil, err
+			}
+			messageDtos = append(messageDtos, messageDto)
 		}
 		return messageDtos, nil
 	}
@@ -38,7 +48,11 @@ func GetAllMessageWithPagination() interface{} {
 		}
 		var messageDtos []dto.MessageResponseDto
 		for _, message := range messages {
-			messageDtos = append(messageDtos, dto.CreateMessageResponseDto(message))
+			messageDto, err := dto.CreateMessageResponseDto(message)
+			if err != nil {
+				return nil, err
+			}
+			messageDtos = append(messageDtos, messageDto)
 		}
 		return messageDtos, nil
 	}
@@ -50,13 +64,17 @@ func GetMessageByID() interface{} {
 		if err != nil {
 			return dto.MessageResponseDto{}, err
 		}
-		return dto.CreateMessageResponseDto(message), nil
+		messageDto, err := dto.CreateMessageResponseDto(message)
+		if err != nil {
+			return dto.MessageResponseDto{}, err
+		}
+
+		return messageDto, nil
 	}
 }
 
 func InsertNewMessage() interface{} {
 	return func(request dto.MessageRequestDto) (dto.MessageResponseDto, error) {
-		// TODO: insert files and images
 		message := model.Message{
 			SenderID:     request.SenderID,
 			SenderName:   request.SenderName,
@@ -66,15 +84,17 @@ func InsertNewMessage() interface{} {
 			UnixTime:     request.UnixTime,
 			ReplyMessage: request.ReplyMessage,
 			Recalled:     request.Recalled,
-			RoomId:       request.RoomId,
-			// Files:        request.Files,
-			// Images:       request.Images,
+			RoomID:       request.RoomID,
 		}
 		err := service.InsertNewMessage(message)
 		if err != nil {
 			return dto.MessageResponseDto{}, err
 		}
-		return dto.CreateMessageResponseDto(message), nil
+		messageDto, err := dto.CreateMessageResponseDto(message)
+		if err != nil {
+			return dto.MessageResponseDto{}, err
+		}
+		return messageDto, nil
 	}
 }
 
@@ -91,6 +111,92 @@ func UpdateMessageByID() interface{} {
 func DeleteMessageByID() interface{} {
 	return func(id uint) error {
 		err := service.DeleteMessageByID(id)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+}
+
+func GetAllMessageFileByMessageID() interface{} {
+	return func(id uint) ([]dto.FileResponseDto, error) {
+		messageFiles, err := service.GetAllMessageFileByMessageID(id)
+		if err != nil {
+			return nil, err
+		}
+		var fileDtos []dto.FileResponseDto
+		for _, messageFile := range messageFiles {
+			file, err := service.GetFileByID(messageFile.FileID)
+			if err != nil {
+				return nil, err
+			}
+			fileDto := dto.CreateFileResponseDto(file)
+			fileDtos = append(fileDtos, fileDto)
+		}
+		return fileDtos, nil
+	}
+}
+
+func GetAllMessageImageByMessageID() interface{} {
+	return func(id uint) ([]dto.ImageResponseDto, error) {
+		messageImages, err := service.GetAllMessageImageByMessageID(id)
+		if err != nil {
+			return nil, err
+		}
+		var imageDtos []dto.ImageResponseDto
+		for _, messageImage := range messageImages {
+			image, err := service.GetImageByID(messageImage.ImageID)
+			if err != nil {
+				return nil, err
+			}
+			imageDto := dto.CreateImageResponseDto(image)
+			imageDtos = append(imageDtos, imageDto)
+		}
+		return imageDtos, nil
+	}
+}
+
+func InsertNewMessageFileByMessageID() interface{} {
+	return func(messageID, fileID uint) error {
+		messageFile := model.MessageFile{
+			MessageID: messageID,
+			FileID:    fileID,
+		}
+		err := service.InsertNewMessageFile(messageFile)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+}
+
+func InsertNewMessageImageByMessageID() interface{} {
+	return func(messageID, fileID uint) error {
+		messageImage := model.MessageImage{
+			MessageID: messageID,
+			ImageID:   fileID,
+		}
+		err := service.InsertNewMessageImage(messageImage)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+}
+
+func DeleteMessageFileByMessageIDAndFileID() interface{} {
+	return func(messageID, fileID uint) error {
+		err := service.DeleteMessageFileByMessageIDAndFileID(messageID, fileID)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+}
+
+func DeleteMessageImageByMessageIDAndImageID() interface{} {
+	return func(messageID, imageID uint) error {
+		err := service.DeleteMessageImageByMessageIDAndImageID(messageID, imageID)
 		if err != nil {
 			return err
 		}
