@@ -21,6 +21,14 @@ func GetAllMessageImageWithPagination(offset, limit int) ([]model.MessageImage, 
 	return messageImages, err
 }
 
+func GetAllMessageImageByMessageID(messageID uint) ([]model.MessageImage, error) {
+	db := database.GetDB()
+	var messageImages []model.MessageImage
+	err := db.Where("message_id = ?", messageID).Find(&messageImages).Error
+
+	return messageImages, err
+}
+
 func InsertNewMessageImage(messageImage model.MessageImage) error {
 	db := database.GetDB()
 	err := db.Create(&messageImage).Error
@@ -46,6 +54,13 @@ func UpdateMessageImageByID(id uint, values map[string]interface{}) error {
 func DeleteMessageImageByID(id uint) error {
 	db := database.GetDB()
 	err := db.Delete(&model.MessageImage{}, id).Error
+
+	return err
+}
+
+func DeleteMessageImageByMessageIDAndImageID(messageID, imageID uint) error {
+	db := database.GetDB()
+	err := db.Delete(&model.MessageImage{}, "message_id = ? AND image_id = ?", messageID, imageID).Error
 
 	return err
 }
