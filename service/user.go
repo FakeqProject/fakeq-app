@@ -28,7 +28,7 @@ func InsertAllUser(user model.User) error {
 	return err
 }
 
-func GetUserById(id uint) (model.User, error) {
+func GetUserByID(id uint) (model.User, error) {
 	db := database.GetDB()
 	var user model.User
 	err := db.First(&user, id).Error
@@ -36,14 +36,14 @@ func GetUserById(id uint) (model.User, error) {
 	return user, err
 }
 
-func UpdateUserById(id uint, values map[string]interface{}) error {
+func UpdateUserByID(id uint, values map[string]interface{}) error {
 	db := database.GetDB()
 	err := db.Model(&model.User{}).Where("id = ?", id).Updates(values).Error
 
 	return err
 }
 
-func DeleteUserById(id uint) error {
+func DeleteUserByID(id uint) error {
 	db := database.GetDB()
 	err := db.Delete(&model.User{}, id).Error
 

@@ -28,7 +28,7 @@ func InsertNewRoom(room model.Room) error {
 	return err
 }
 
-func GetRoomById(id uint) (model.Room, error) {
+func GetRoomByID(id uint) (model.Room, error) {
 	db := database.GetDB()
 	var room model.Room
 	err := db.First(&room, id).Error
@@ -36,14 +36,14 @@ func GetRoomById(id uint) (model.Room, error) {
 	return room, err
 }
 
-func UpdateRoomById(id uint, values map[string]interface{}) error {
+func UpdateRoomByID(id uint, values map[string]interface{}) error {
 	db := database.GetDB()
 	err := db.Model(&model.Room{}).Where("id = ?", id).Updates(values).Error
 
 	return err
 }
 
-func DeleteRoomById(id uint) error {
+func DeleteRoomByID(id uint) error {
 	db := database.GetDB()
 	err := db.Delete(&model.Room{}, id).Error
 

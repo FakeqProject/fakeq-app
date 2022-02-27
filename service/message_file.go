@@ -28,7 +28,7 @@ func InsertNewMessageFile(messageFile model.MessageFile) error {
 	return err
 }
 
-func GetMessageFileById(id uint) (model.MessageFile, error) {
+func GetMessageFileByID(id uint) (model.MessageFile, error) {
 	db := database.GetDB()
 	var messageFile model.MessageFile
 	err := db.First(&messageFile, id).Error
@@ -36,14 +36,14 @@ func GetMessageFileById(id uint) (model.MessageFile, error) {
 	return messageFile, err
 }
 
-func UpdateMessageFileById(id uint, values map[string]interface{}) error {
+func UpdateMessageFileByID(id uint, values map[string]interface{}) error {
 	db := database.GetDB()
 	err := db.Model(&model.MessageFile{}).Where("id = ?", id).Updates(values).Error
 
 	return err
 }
 
-func DeleteMessageFileById(id uint) error {
+func DeleteMessageFileByID(id uint) error {
 	db := database.GetDB()
 	err := db.Delete(&model.MessageFile{}, id).Error
 

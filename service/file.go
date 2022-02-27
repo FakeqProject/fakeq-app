@@ -28,7 +28,7 @@ func InsertNewFile(file model.File) error {
 	return err
 }
 
-func GetFileById(id uint) (model.File, error) {
+func GetFileByID(id uint) (model.File, error) {
 	db := database.GetDB()
 	var file model.File
 	err := db.First(&file, id).Error
@@ -36,14 +36,14 @@ func GetFileById(id uint) (model.File, error) {
 	return file, err
 }
 
-func UpdateFileById(id uint, values map[string]interface{}) error {
+func UpdateFileByID(id uint, values map[string]interface{}) error {
 	db := database.GetDB()
 	err := db.Model(&model.File{}).Where("id = ?", id).Updates(values).Error
 
 	return err
 }
 
-func DeleteFileById(id uint) error {
+func DeleteFileByID(id uint) error {
 	db := database.GetDB()
 	err := db.Delete(&model.File{}, id).Error
 

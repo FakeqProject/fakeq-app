@@ -28,7 +28,7 @@ func InsertNewImage(image model.Image) error {
 	return err
 }
 
-func GetImageById(id uint) (model.Image, error) {
+func GetImageByID(id uint) (model.Image, error) {
 	db := database.GetDB()
 	var image model.Image
 	err := db.First(&image, id).Error
@@ -36,14 +36,14 @@ func GetImageById(id uint) (model.Image, error) {
 	return image, err
 }
 
-func UpdateImageById(id uint, values map[string]interface{}) error {
+func UpdateImageByID(id uint, values map[string]interface{}) error {
 	db := database.GetDB()
 	err := db.Model(&model.Image{}).Where("id = ?", id).Updates(values).Error
 
 	return err
 }
 
-func DeleteImageById(id uint) error {
+func DeleteImageByID(id uint) error {
 	db := database.GetDB()
 	err := db.Delete(&model.Image{}, id).Error
 

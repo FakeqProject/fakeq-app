@@ -28,7 +28,7 @@ func InsertNewGroup(group model.Group) error {
 	return err
 }
 
-func GetGroupById(id uint) (model.Group, error) {
+func GetGroupByID(id uint) (model.Group, error) {
 	db := database.GetDB()
 	var group model.Group
 	err := db.First(&group, id).Error
@@ -36,14 +36,14 @@ func GetGroupById(id uint) (model.Group, error) {
 	return group, err
 }
 
-func UpdateGroupById(id uint, values map[string]interface{}) error {
+func UpdateGroupByID(id uint, values map[string]interface{}) error {
 	db := database.GetDB()
 	err := db.Model(&model.Group{}).Where("id = ?", id).Updates(values).Error
 
 	return err
 }
 
-func DeleteGroupById(id uint) error {
+func DeleteGroupByID(id uint) error {
 	db := database.GetDB()
 	err := db.Delete(&model.Group{}, id).Error
 

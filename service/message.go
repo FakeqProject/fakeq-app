@@ -28,7 +28,7 @@ func InsertNewMessage(message model.Message) error {
 	return err
 }
 
-func GetMessageById(id uint) (model.Message, error) {
+func GetMessageByID(id uint) (model.Message, error) {
 	db := database.GetDB()
 	var message model.Message
 	err := db.First(&message, id).Error
@@ -36,14 +36,14 @@ func GetMessageById(id uint) (model.Message, error) {
 	return message, err
 }
 
-func UpdateMessageById(id uint, values map[string]interface{}) error {
+func UpdateMessageByID(id uint, values map[string]interface{}) error {
 	db := database.GetDB()
 	err := db.Model(&model.Message{}).Where("id = ?", id).Updates(values).Error
 
 	return err
 }
 
-func DeleteMessageById(id uint) error {
+func DeleteMessageByID(id uint) error {
 	db := database.GetDB()
 	err := db.Delete(&model.Message{}, id).Error
 
