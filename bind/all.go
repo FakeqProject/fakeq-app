@@ -5,5 +5,11 @@ import (
 )
 
 func AllBindCollection(w webview.WebView) {
-	w.Bind("quit", QuitBind(w))
+	FileBindCollection(w)
+	GroupBindCollection(w)
+	ImageBindCollection(w)
+	MessageBindCollection(w)
+	QuitBindCollection(w)
+	RoomBindCollection(w)
+	UserBindCollection(w)
 }
