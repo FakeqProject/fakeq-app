@@ -1,12 +1,51 @@
 package service
 
-import "github.com/FakeqProject/fakeq-app/model"
+import (
+	"github.com/FakeqProject/fakeq-app/database"
+	"github.com/FakeqProject/fakeq-app/model"
+)
 
-type MessageFileServiceInterface interface {
-	GetAllMessageFile() ([]model.MessageFile, error)
-	GetAllMessageFileWithPagination(offset, limit int) ([]model.MessageFile, error)
-	InsertNewMessageFile(messageFile model.MessageFile) error
-	GetMessageFileById(id uint) (model.MessageFile, error)
-	UpdateMessageFileById(id uint, values map[string]interface{}) error
-	DeleteMessageFileById(id uint) error
+func GetAllMessageFile() ([]model.MessageFile, error) {
+	db := database.GetDB()
+	var messageFiles []model.MessageFile
+	err := db.Find(&messageFiles).Error
+
+	return messageFiles, err
+}
+
+func GetAllMessageFileWithPagination(offset, limit int) ([]model.MessageFile, error) {
+	db := database.GetDB()
+	var messageFiles []model.MessageFile
+	err := db.Offset(offset).Limit(limit).Find(&messageFiles).Error
+
+	return messageFiles, err
+}
+
+func InsertNewMessageFile(messageFile model.MessageFile) error {
+	db := database.GetDB()
+	err := db.Create(&messageFile).Error
+
+	return err
+}
+
+func GetMessageFileById(id uint) (model.MessageFile, error) {
+	db := database.GetDB()
+	var messageFile model.MessageFile
+	err := db.First(&messageFile, id).Error
+
+	return messageFile, err
+}
+
+func UpdateMessageFileById(id uint, values map[string]interface{}) error {
+	db := database.GetDB()
+	err := db.Model(&model.MessageFile{}).Where("id = ?", id).Updates(values).Error
+
+	return err
+}
+
+func DeleteMessageFileById(id uint) error {
+	db := database.GetDB()
+	err := db.Delete(&model.MessageFile{}, id).Error
+
+	return err
 }
