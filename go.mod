@@ -8,7 +8,10 @@ require (
 	gorm.io/gorm v1.23.1
 )
 
-require github.com/spf13/viper v1.10.1
+require (
+	github.com/spf13/viper v1.10.1
+	github.com/webview/webview v0.0.0-20220225033244-e75f7551c31c
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
