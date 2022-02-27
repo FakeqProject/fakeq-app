@@ -21,7 +21,7 @@ func GetAllUserWithPagination(offset, limit int) ([]model.User, error) {
 	return users, err
 }
 
-func InsertAllUser(user model.User) error {
+func InsertNewUser(user model.User) error {
 	db := database.GetDB()
 	err := db.Create(&user).Error
 
