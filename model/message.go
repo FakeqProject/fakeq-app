@@ -11,7 +11,7 @@ type Message struct {
 	Content      string
 	Code         string
 	Date         string
-	UTime        int64
+	UnixTime     int64
 	ReplyMessage string
 	Recalled     bool
 	RoomId       uint
