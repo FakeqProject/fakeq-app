@@ -14,5 +14,5 @@ type Message struct {
 	UnixTime     int64
 	ReplyMessage string
 	Recalled     bool
-	RoomId       uint
+	RoomID       uint
 }
