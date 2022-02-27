@@ -1,0 +1,11 @@
+common:
+  port: 8080
+mysql:
+  username: root
+  password: password
+  host: localhost
+  port: 3306
+  database: example
+  charset: utf8
+sqlite:
+  path: /root/.fakeq/database/fakeq.db

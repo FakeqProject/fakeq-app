@@ -32,3 +32,6 @@ webview-example
 
 ### config file ###
 config/config.yml
+
+### sqlite db ###
+fakeq.db
