@@ -1,5 +1,7 @@
 common:
   port: 8080
+database:
+  type: sqlite
 mysql:
   username: root
   password: password
@@ -8,4 +10,4 @@ mysql:
   database: example
   charset: utf8
 sqlite:
-  path: /root/.fakeq/database/fakeq.db
+  path: ./fakeq.db
